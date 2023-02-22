@@ -6,42 +6,68 @@ const messageField = document.querySelector('.message')
 const checkButton = document.querySelector('.check')
 const guessInput = document.querySelector('.guess')
 const againButton = document.querySelector('.again')
+const bodyField = document.querySelector('body')
 
 //Crear las variables que necesitamos
 
-const highScore = 0
-let score = 20
-const number = guessInput.value
+let highScore = 0
+let score
 
 //Creacioń de un número aleatorio
 const MAX_NUMBER = 20
 const MIN_NUMBER = 1
-const secretNumber = Math.trunc(Math.random() * MAX_NUMBER) + MIN_NUMBER
+let secretNumber
 //const secretNumber = Math.trunc(Math.random() * 20) + 1
-console.log(secretNumber, number)
+
+fnInitApp()
 
 //Capturar el checkButton y agregarle un evento y mostrar un mensaje
 //El mensaje tiene que decir si el numero es mayor o menor en el campo messageField
 //Si es mayor o menor el score tiene que disminuir
 checkButton.addEventListener('click', function () {
   const number = Number(guessInput.value)
-  if (number > secretNumber) {
-    messageField.textContent = 'El numero es mayor que el numero secreto'
-    score = score - 1
-    //score--
-    scoreField.textContent = score
-  } else if (number < secretNumber) {
-    messageField.textContent = 'El numero es menor que el numero secreto'
-    score = score - 1
-    scoreField.textContent = score
-  } else {
-    messageField.textContent = '¡Ganaste!'
+  console.log(number, typeof number)
+  if (number === secretNumber) {
+    mostrarMensaje('¡Ganaste!')
+    if (score > highScore) {
+      highScore = highScoreField.textContent = score
+      bodyField.style.backgroundColor = 'purple'
+      numberField.textContent = secretNumber
+      localStorage.setItem('highScore', highScore)
+    }
+  } else if (score === 1) {
+    mostrarMensaje('Perdiste')
+    scoreField.textContent = 0
+    bodyField.style.backgroundColor = 'red'
   }
+
+  //cambiar el color del fondo del body, mostrar numero secreto en vez de ?
+  else {
+    const mensaje =
+      number > secretNumber
+        ? 'El numero es mayor que el numero secreto'
+        : 'El numero es menor que el numero secreto'
+    mostrarMensaje(mensaje)
+    score = score - 1
+    scoreField.textContent = score
+  }
+
   console.log(messageField)
 })
 
-numberField.addEventListener('acierto', function () {
-  if (number === secretNumber) {
-    console.log(number)
-  }
-})
+function mostrarMensaje(mensaje) {
+  messageField.textContent = mensaje
+}
+
+againButton.addEventListener('click', fnInitApp)
+
+function fnInitApp() {
+  score = 20
+  scoreField.textContent = score
+  guessInput.value = ''
+  secretNumber = Math.trunc(Math.random() * MAX_NUMBER) + MIN_NUMBER
+  mostrarMensaje('Empieza a adivinar')
+  bodyField.style.backgroundColor = 'black'
+  numberField.textContent = '?'
+  localStorage.getItem('highScore')
+}
