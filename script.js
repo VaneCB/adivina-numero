@@ -10,7 +10,7 @@ const bodyField = document.querySelector('body')
 
 //Crear las variables que necesitamos
 
-let highScore = 0
+let highScore
 let score
 
 //Creacioń de un número aleatorio
@@ -66,9 +66,10 @@ function fnInitApp() {
   score = 20
   scoreField.textContent = score
   guessInput.value = ''
+  highScore = localStorage.getItem('highScore') || 0
+  highScoreField.textContent = highScore
   secretNumber = Math.trunc(Math.random() * MAX_NUMBER) + MIN_NUMBER
   mostrarMensaje('Empieza a adivinar')
   bodyField.style.backgroundColor = 'black'
   numberField.textContent = '?'
-  localStorage.getItem('highScore')
 }
