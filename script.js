@@ -29,10 +29,11 @@ checkButton.addEventListener('click', function () {
   console.log(number, typeof number)
   if (number === secretNumber) {
     mostrarMensaje('¡Ganaste!')
+    bodyField.style.backgroundColor = 'purple'
+    numberField.textContent = secretNumber
     if (score > highScore) {
       highScore = highScoreField.textContent = score
-      bodyField.style.backgroundColor = 'purple'
-      numberField.textContent = secretNumber
+      bodyField.style.backgroundColor = 'darkgreen'
       localStorage.setItem('highScore', highScore)
     }
   } else if (score === 1) {
